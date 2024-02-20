@@ -9,9 +9,10 @@ defineProps({
   isFavourite: Boolean,
   isAdded: Boolean,
   clickToFav: Function,
-  onClickFavourite: Function,
-  onClickAdd: Function
+  addToCart: Function
 })
+// const clickToFav = inject('clickToFav')
+
 </script>
 <template>
   <div
@@ -32,7 +33,7 @@ defineProps({
         <span class="text-slate-400">Цена</span>
         <b>{{ price }} руб.</b>
       </div>
-      <img @click="onClickAdd" :src="!isAdded ? '/plus.svg' : '/checked.svg'" alt="Plus" />
+      <img @click="addToCart" :src="!isAdded ? '/plus.svg' : '/checked.svg'" alt="Plus" />
     </div>
   </div>
 </template>

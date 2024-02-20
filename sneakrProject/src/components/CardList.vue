@@ -11,14 +11,14 @@ defineProps({
   items: Array
 })
 
-//прокидывем функцию через emit
-const emit = defineEmits(['addToFavorite'], ['addToCart'], ['clickToFav'])
+//Для работы с прокидывающимеся пропсами
+const emit = defineEmits( ['addToCart'], ['onclickToFav'])
 
 //вытаскиеваем функцию addToFavorite из родительского компонента
 // const addToFavorite = inject('addToFavorite')
 </script>
 <template>
-  <div class="mt-3 grid grid-cols-4 gap-8">
+  <div class="mt-3 grid grid-cols-4 gap-8" v-auto-animate>
     <!-- передаем props в компонент Card -->
     <Card
       v-for="item in items"
@@ -27,9 +27,9 @@ const emit = defineEmits(['addToFavorite'], ['addToCart'], ['clickToFav'])
       :imageUrl="item.imageUrl"
       :title="item.title"
       :price="item.price"
-      :is-added="false"
-      :onClickAdd="() => emit('addToCart', item)"
+      :addToCart="() => emit('addToCart', item)"
       :clickToFav="() => emit('clickToFav', item)"
+      :is-added="item.isAdded"
       :is-favourite="item.isFavorite"
     />
   </div>

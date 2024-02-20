@@ -1,4 +1,9 @@
-<script setup></script>
+<script setup>
+const emit = defineEmits(['openDrawer'])
+defineProps({
+  totalPrice: Number
+})
+</script>
 
 <template>
   <header class="flex justify-between border-b border-gray-100 px-8 py-8">
@@ -11,9 +16,12 @@
     </div>
 
     <ul class="flex items-center gap-3">
-      <li class="flex items-center gap-3 text-black-700 hover:text-black cursor-pointer">
+      <li
+        @click="emit('openDrawer')"
+        class="flex items-center gap-3 text-black-700 hover:text-black cursor-pointer"
+      >
         <img src="/cart.svg" alt="cart" />
-        <span> 1205 руб.</span>
+        <span> {{totalPrice}} руб.</span>
       </li>
 
       <li class="flex items-center gap-3 text-gray-700 hover:text-black cursor-pointer">

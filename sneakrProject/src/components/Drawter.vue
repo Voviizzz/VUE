@@ -26,7 +26,6 @@ defineProps({
       </div>
 
       <div v-else>
-        
         <CartItemList />
 
         <div>

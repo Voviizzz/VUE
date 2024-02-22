@@ -7,13 +7,15 @@ defineProps({
 
 <template>
   <header class="flex justify-between border-b border-gray-100 px-8 py-8">
-    <div class="flex items-center gap-4">
-      <img class="w-10" src="/logo.png" alt="Логотип" />
-      <div>
-        <h2 class="text-xl font-bold uppercase">Vue sniakers</h2>
-        <p class="text-slate-500">Магазин лучших кросовок</p>
+    <router-link to="/">
+      <div class="flex items-center gap-4">
+        <img class="w-10" src="/logo.png" alt="Логотип" />
+        <div>
+          <h2 class="text-xl font-bold uppercase">Vue sniakers</h2>
+          <p class="text-slate-500">Магазин лучших кросовок</p>
+        </div>
       </div>
-    </div>
+    </router-link>
 
     <ul class="flex items-center gap-3">
       <li
@@ -21,13 +23,15 @@ defineProps({
         class="flex items-center gap-3 text-black-700 hover:text-black cursor-pointer"
       >
         <img src="/cart.svg" alt="cart" />
-        <span> {{totalPrice}} руб.</span>
+        <span> {{ totalPrice }} руб.</span>
       </li>
 
-      <li class="flex items-center gap-3 text-gray-700 hover:text-black cursor-pointer">
-        <img src="/heart.svg" alt="cart" />
-        <span> Закладки</span>
-      </li>
+      <router-link to="/favorites">
+        <li class="flex items-center gap-3 text-gray-700 hover:text-black cursor-pointer">
+          <img src="/heart.svg" alt="cart" />
+          <span> Закладки</span>
+        </li>
+      </router-link>
 
       <li class="flex items-center gap-3 text-gray-700 hover:text-black cursor-pointer">
         <img src="/profile.svg" alt="cart" />

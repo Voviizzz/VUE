@@ -12,7 +12,7 @@ defineProps({
 })
 
 //Для работы с прокидывающимеся пропсами
-const emit = defineEmits( ['addToCart'], ['onclickToFav'])
+const emit = defineEmits(['addToCart'], ['onclickToFav'])
 
 //вытаскиеваем функцию addToFavorite из родительского компонента
 // const addToFavorite = inject('addToFavorite')

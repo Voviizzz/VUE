@@ -1,9 +1,9 @@
 <script setup>
 import { ref, inject } from "vue"
-import TodoItemForm from "./ToDoItemForm.vue";
-import TodoList from "./ToDoList.vue";
-import TodoFilter from "./ToDoFilter.vue";
-import TodoSummary from "./ToDoSummary.vue"
+import TodoItemForm from "../components/ToDos/ToDoItemForm.vue";
+import TodoList from "../components/ToDos/ToDoList.vue";
+import TodoFilter from "../components/ToDos/ToDoFilter.vue";
+import TodoSummary from "../components/ToDos/ToDoSummary.vue"
 import todoService from "../services/todo";
 
 const

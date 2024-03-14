@@ -61,7 +61,7 @@ header {
     height: 35px;
     border-radius: 15px;
     background-color: rgb(230, 160, 69);
-    border: 1px solid rgb(176, 176, 176);
+    border: none;
     text-align: center;
     color: white;
 }
@@ -116,6 +116,11 @@ header {
     z-index: 12;
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
 .input-title {
     font-size: 24px;
     width: 100%;
@@ -124,6 +129,7 @@ header {
     padding: 0.5em;
     border: 1px solid rgb(176, 176, 176)
 }
+
 .textarea {
     font-size: 24px;
     border-radius: 5px;

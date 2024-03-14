@@ -2,18 +2,15 @@
 import { ref, onMounted } from 'vue'
 import HeaderNotes from './components/HeaderNotes.vue'
 import ModalDialog from './components/ModalDialog.vue'
+import CardsList from './components/CardsList.vue'
 
 const showModal = ref(false)
 const cards = ref([])
 
-const toggleShow = (title) => {
+const toggleShow = () => {
   showModal.value = !showModal.value
-  if (title) {
-    title.value = ''
-  }
 }
-const addItems = (title, text) => {
-  console.log(title, text)
+const addItems = ({ title, text }) => {
   cards.value.push({
     id: cards.value.length + 1,
     title: title,
@@ -47,18 +44,7 @@ const removeTask = (id) => {
     <ModalDialog @toggle-show="toggleShow" v-if="showModal" @add-items="addItems" />
     <div class="container">
       <HeaderNotes v-on:toggleShow="toggleShow" />
-      <div class="cards-container">
-        <div class="card" v-for="card in cards" :key="card.id">
-          <span class="btn-delete"
-            ><img @click="removeTask(card.id)" src="./assets/images/icons/CloseSquare.svg" alt=""
-          /></span>
-          <div class="main-text">
-            <h1>{{ card.title }}</h1>
-            <p>{{ card.text }}</p>
-          </div>
-          <p class="date">{{ card.date }}</p>
-        </div>
-      </div>
+      <CardsList :cards="cards" @remove-task="removeTask" />
     </div>
   </main>
 </template>

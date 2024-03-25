@@ -39,7 +39,7 @@ const onSubmit = () => {
         >
         <input type="text" id="amount" placeholder="Enter amount" v-model="amount" />
       </div>
-      <button class="btn" @click.prevent="onSubmit" @keyup.enter.prevent="onSubmit">
+      <button  class="btn" @click.prevent="onSubmit" @keyup.enter.prevent="onSubmit">
         Add transaction
       </button>
     </form>

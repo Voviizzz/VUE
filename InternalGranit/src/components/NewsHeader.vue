@@ -2,12 +2,33 @@
 import { defineEmits, defineProps, ref } from 'vue'
 // import ModalAddNewItem from './ModalAddNewItem.vue'
 
-const modalActive = ref(false)
+const formActive = ref(false)
+const departament = ref('')
+const newsTitle = ref('')
+const newsText = ref('')
 
 const props = defineProps({
   isActive: Boolean
 })
 const emit = defineEmits(['toggleBtn'])
+
+function toggleBtn() {
+  emit('toggleBtn')
+}
+
+const departaments = [
+  { name: 'London', date: '11/02/2022', numberOfPeople: 4, complete: true },
+  { name: 'Paris', date: '12/01/2022', numberOfPeople: 2, complete: true },
+  { name: 'Tokyo', date: '04/06/2021', numberOfPeople: 6, complete: true },
+  { name: 'Mumbai', date: '08/10/2021', numberOfPeople: 10, complete: true },
+  { name: 'New York', date: '12/12/2022', numberOfPeople: 14, complete: true },
+  { name: 'Dubai', date: '10/02/2023', numberOfPeople: 12, complete: false },
+  { name: 'Shanghai', date: '04/02/2020', numberOfPeople: 2, complete: true },
+]
+
+function addNews() {
+  console.log(departament.value, newsTitle.value, newsText.value)
+}
 
 // function modalOpen() {
 //   document.querySelector('body').style.overflow = 'hidden'
@@ -19,7 +40,7 @@ const emit = defineEmits(['toggleBtn'])
 //   modalActive.value = false
 // }
 
-console.log(props.isActive)
+console.log(newsText)
 </script>
 <template>
   <div>
@@ -42,7 +63,7 @@ console.log(props.isActive)
       <div
         class="mt-10 hover:cursor-pointer hover:shadow-lg hover:transition hover:ease-in-out h-16 rounded-xl bg-[#ffffff] items-center container mx-auto"
       >
-        <form action="Submit " class="flex items-center justify-between h-full">
+        <form class="flex items-center justify-between h-full">
           <div class="flex items-center mx-10 pl-10">
             <input
               type="text"
@@ -68,7 +89,7 @@ console.log(props.isActive)
               </option>
             </select>
             <button
-              @click="modalOpen"
+              @click.prevent="formActive = !formActive"
               class="flex create-new-note float-right px-5 py-2 rounded-lg text-white bg-[#5c9ee9] hover:bg-[#4290e9] hover:delay-50 hover:scale-110 hover:transalte-y-1 hover:transition hover:ease-in-out"
             >
               Создать новость
@@ -76,24 +97,66 @@ console.log(props.isActive)
           </div>
         </form>
       </div>
-      <div class="">
-        <form action="" class="mt-10 container mx-auto w-full flex flex-col">
-          <label for="" class="select__label text-xl pl-5">Выберете отдел</label>
-          <div class="select">
-            <div class="select__header">
-              <span class="select_current">Value 1</span>
-              <div class="select__icon">&times;</div>
+      <transition name="form">
+        <div class="" v-if="formActive">
+          <form
+            action=""
+            type="submit"
+            class="mt-10 container mx-auto w-full flex flex-col border-2 border-white bg-white p-16 rounded-2xl"
+          >
+            <label for="" class="select__label text-xl">Выберете отдел</label>
+            <div class="select m-3">
+              <div class="select__header">
+                <span class="select_current">Value 1</span>
+                <div class="select__icon">&#8595;</div>
+              </div>
+              <div>
+                <div class="select__body" v-for="(item, index) of departaments" :key="index">
+                  <p>{{ item.name }}</p>
+                  <!-- <div class="select__item">
+                  <span>Производства &#8594;</span>
+                  <div
+                    class="second_body hidden absolute top-0 left-[255px] bg-[#5c9ee9] rounded-xl shadow-xl"
+                  >
+                    <div class="select__item"></div>
+                    <div class="select__item">Производство 2</div>
+                    <div class="select__item">Производство 3</div>
+                    <div class="select__item">Производство 4</div>
+                  </div>
+                </div> -->
+                  <!-- <div class="select__item">
+                  <span>{{ departament }}</span>
+                </div> -->
+                </div>
+              </div>
             </div>
-            <div class="select__body">
-              <div class="select__item">Value 1</div>
-              <div class="select__item">Value 2</div>
-              <div class="select__item">Value 3</div>
-              <div class="select__item">Value 4</div>
-              <div class="select__item">Value 5</div>
-            </div>
-          </div>
-        </form>
-      </div>
+            <label for="title" class="text-xl"> Введите заголовок новости</label>
+            <input
+              v-model="newsTitle"
+              type="text"
+              placeholder="Заголовок"
+              name="title"
+              class="w-100 h-10 rounded-xl bg-[#f3f3f3] px-5 m-3 text-xl"
+            />
+            <label for="note" class="">Введите текст новости</label>
+            <textarea
+              v-model="newsText"
+              name="note"
+              id=""
+              cols="20"
+              rows="6"
+              placeholder="Текст новости"
+              class="w-100 rounded-xl bg-[#f0f0f0] px-5 m-3 text-xl resize-none"
+            ></textarea>
+            <button
+              @click.prevent="addNews"
+              class="btn btn-search flex bg-[#5c9ee9] hover:bg-[#4290e9] hover:delay-50 hover:scale-110 hover:transalte-y-1 hover:transition hover:ease-in-out text-white py-2 rounded-lg text-xl max-w-[250px] w-full justify-center mx-auto m-3"
+            >
+              Добавить
+            </button>
+          </form>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -101,7 +164,6 @@ console.log(props.isActive)
 <style scoped>
 .select {
   position: relative;
-  padding: 10px;
   max-width: 250px;
 }
 
@@ -121,6 +183,11 @@ console.log(props.isActive)
 .select:hover .select__body {
   display: block;
 }
+
+.select__item:hover .second_body {
+  display: block;
+}
+
 .select__header {
   display: flex;
   width: 250px;
@@ -158,5 +225,15 @@ console.log(props.isActive)
 .select__item:hover {
   background-color: #4290e9;
   border-radius: 25px;
+}
+
+.form-enter-active,
+.form-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.form-enter-from,
+.form-leave-to {
+  opacity: 0;
 }
 </style>

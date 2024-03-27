@@ -29,13 +29,40 @@ async function getNews() {
   loading.value = true
   try {
     await axios.get('https://73df57f40683f5ec.mokky.dev/news').then((response) => {
-      newsList.value = response.data
-      return newsList
+      newsList.value = response.data.reverse()
     })
   } catch {
     toast.error('')
   } finally {
     loading.value = false
+  }
+}
+
+/* Добавление новости */ async function addNews({ departament, newsTitle, newsText, formActive }) {
+  if (departament.value === '' || newsTitle === '' || newsText === '') {
+    toast.error('Заполните поля')
+  } else {
+    newsList.value.push({
+      id: newsList.value.length + 1,
+      departament: departament.value,
+      newsTitle: newsTitle.value,
+      newsText: newsText.value,
+      date: new Date().toLocaleDateString()
+    })
+    await axios.post('https://73df57f40683f5ec.mokky.dev/news', {
+      departament: departament.value,
+      newsTitle: newsTitle.value,
+      newsText: newsText.value,
+      date: new Date().toLocaleDateString()
+    })
+
+    toast.success('Новость добавлена')
+    departament.value = ''
+    newsTitle.value = ''
+    newsText.value = ''
+    formActive.value = false
+    console.log(newsList)
+    newsList.value.reverse()
   }
 }
 
@@ -51,7 +78,7 @@ async function getNews() {
     <!-- ********************Main Section********************* -->
 
     <div class="right-section px-8 py-6 bg-[#F4F6FA] text-2xl w-screen">
-      <NewsHeader @toggleBtn="toggleBtn" :isActive="isActive" />
+      <NewsHeader @toggleBtn="toggleBtn" :isActive="isActive" @addNews="addNews" />
 
       <Spinner class="flex justify-center" v-if="loading"></Spinner>
 

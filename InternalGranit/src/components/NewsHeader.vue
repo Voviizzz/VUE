@@ -1,34 +1,68 @@
 <script setup>
 import { defineEmits, defineProps, ref } from 'vue'
-// import ModalAddNewItem from './ModalAddNewItem.vue'
+import { useToast } from 'vue-toastification'
+import ModalAddNewItemVue from './ModalAddNewItem.vue'
+
+//Константы, которые показывают состояние
 
 const formActive = ref(false)
+
 const departament = ref('')
 const newsTitle = ref('')
 const newsText = ref('')
 
+//Принимаем переданные значения
+
 const props = defineProps({
-  isActive: Boolean
+  isActive: Boolean,
+  newsList: Array
 })
-const emit = defineEmits(['toggleBtn'])
+
+//Отлавливаем события и передаем в родитель
+const emit = defineEmits(['toggleBtn'], ['addNews'])
+function addNews() {
+  emit('addNews', { departament, newsTitle, newsText, formActive })
+}
 
 function toggleBtn() {
   emit('toggleBtn')
 }
 
 const departaments = [
-  { name: 'London', date: '11/02/2022', numberOfPeople: 4, complete: true },
-  { name: 'Paris', date: '12/01/2022', numberOfPeople: 2, complete: true },
-  { name: 'Tokyo', date: '04/06/2021', numberOfPeople: 6, complete: true },
-  { name: 'Mumbai', date: '08/10/2021', numberOfPeople: 10, complete: true },
-  { name: 'New York', date: '12/12/2022', numberOfPeople: 14, complete: true },
-  { name: 'Dubai', date: '10/02/2023', numberOfPeople: 12, complete: false },
-  { name: 'Shanghai', date: '04/02/2020', numberOfPeople: 2, complete: true },
+  { id: 1, name: 'Производства' },
+  { id: 2, name: 'АСУ' },
+  { id: 3, name: 'Профком' },
+  { id: 4, name: 'Бухгалтерия' },
+  { id: 5, name: 'Столовая' },
+  { id: 6, name: 'Столовая' }
 ]
 
-function addNews() {
-  console.log(departament.value, newsTitle.value, newsText.value)
-}
+// async function addNews() {
+//   if (newsTitle.value === '' || newsText.value === '' || departament.value === '') {
+//     toast.error('Заполните все поля')
+//   } else {
+//     try {
+//       await axios
+//         .post('https://73df57f40683f5ec.mokky.dev/news', {
+//           title: newsTitle.value,
+//           text: newsText.value,
+//           departament: departament.value,
+//           date: new Date().toLocaleDateString()
+//         })
+//         .then((response) => {
+//           if (response.status === 200 || response.status === 201) {
+//             toast.success('Новость добавлена')
+//             newsTitle.value = ''
+//             newsText.value = ''
+//             departament.value = ''
+//             formActive.value = false
+//           }
+//         })
+//     } catch {
+//       toast.error('Новость не добавлена')
+//     }
+//   }
+// }
 
 // function modalOpen() {
 //   document.querySelector('body').style.overflow = 'hidden'
@@ -40,12 +74,20 @@ function addNews() {
 //   modalActive.value = false
 // }
 
-console.log(newsText)
+function setDepartament(dep) {
+  document.querySelector('.select_current').textContent = dep
+  departament.value = dep
+  if (dep) {
+    document.querySelector('.select__icon').classList.add('hidden')
+  }
+}
+
+// console.log(newsText)
+// console.log(newsTitle);
 </script>
 <template>
   <div>
     <div>
-      <!-- <ModalAddNewItem v-if="modalActive" @toggleShow="toggleShow" /> -->
       <div
         v-bind:class="{ 'after:rotate-[45deg] before:rotate-[145deg]': props.isActive }"
         @click="toggleBtn"
@@ -97,66 +139,7 @@ console.log(newsText)
           </div>
         </form>
       </div>
-      <transition name="form">
-        <div class="" v-if="formActive">
-          <form
-            action=""
-            type="submit"
-            class="mt-10 container mx-auto w-full flex flex-col border-2 border-white bg-white p-16 rounded-2xl"
-          >
-            <label for="" class="select__label text-xl">Выберете отдел</label>
-            <div class="select m-3">
-              <div class="select__header">
-                <span class="select_current">Value 1</span>
-                <div class="select__icon">&#8595;</div>
-              </div>
-              <div>
-                <div class="select__body" v-for="(item, index) of departaments" :key="index">
-                  <p>{{ item.name }}</p>
-                  <!-- <div class="select__item">
-                  <span>Производства &#8594;</span>
-                  <div
-                    class="second_body hidden absolute top-0 left-[255px] bg-[#5c9ee9] rounded-xl shadow-xl"
-                  >
-                    <div class="select__item"></div>
-                    <div class="select__item">Производство 2</div>
-                    <div class="select__item">Производство 3</div>
-                    <div class="select__item">Производство 4</div>
-                  </div>
-                </div> -->
-                  <!-- <div class="select__item">
-                  <span>{{ departament }}</span>
-                </div> -->
-                </div>
-              </div>
-            </div>
-            <label for="title" class="text-xl"> Введите заголовок новости</label>
-            <input
-              v-model="newsTitle"
-              type="text"
-              placeholder="Заголовок"
-              name="title"
-              class="w-100 h-10 rounded-xl bg-[#f3f3f3] px-5 m-3 text-xl"
-            />
-            <label for="note" class="">Введите текст новости</label>
-            <textarea
-              v-model="newsText"
-              name="note"
-              id=""
-              cols="20"
-              rows="6"
-              placeholder="Текст новости"
-              class="w-100 rounded-xl bg-[#f0f0f0] px-5 m-3 text-xl resize-none"
-            ></textarea>
-            <button
-              @click.prevent="addNews"
-              class="btn btn-search flex bg-[#5c9ee9] hover:bg-[#4290e9] hover:delay-50 hover:scale-110 hover:transalte-y-1 hover:transition hover:ease-in-out text-white py-2 rounded-lg text-xl max-w-[250px] w-full justify-center mx-auto m-3"
-            >
-              Добавить
-            </button>
-          </form>
-        </div>
-      </transition>
+      <ModalAddNewItemVue />
     </div>
   </div>
 </template>
@@ -164,7 +147,9 @@ console.log(newsText)
 <style scoped>
 .select {
   position: relative;
-  max-width: 250px;
+  display: inline-block;
+  width: 100%;
+  max-width: 200px;
 }
 
 /* bg-[#5c9ee9] hover:bg-[#4290e9] */
@@ -173,7 +158,8 @@ console.log(newsText)
   position: absolute;
   top: 100%;
   left: 10;
-  width: 250px;
+  width: 100%;
+  max-width: 200px;
   background-color: #5c9ee9;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -190,7 +176,6 @@ console.log(newsText)
 
 .select__header {
   display: flex;
-  width: 250px;
   border: 1px solid #ccc;
   border-radius: 15px;
   cursor: pointer;
@@ -203,23 +188,15 @@ console.log(newsText)
   line-height: 22px;
   padding: 8px;
 }
-.select__icon {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  flex-shrink: 0;
-}
+/* .select__icon {
+
+} */
 .select__item {
   color: #eeeeee;
   cursor: pointer;
   font-size: 18px;
   padding: 10px;
   line-height: 22px;
-  width: 250px;
   border-radius: 1px solid #9d2828;
 }
 .select__item:hover {
@@ -235,5 +212,17 @@ console.log(newsText)
 .form-enter-from,
 .form-leave-to {
   opacity: 0;
+}
+
+@keyframes bounce {
+  0% {
+    top: 0;
+  }
+  50% {
+    top: 2.5px;
+  }
+  100% {
+    top: 5px;
+  }
 }
 </style>

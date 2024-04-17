@@ -8,7 +8,7 @@ const title = ref('')
 const text = ref('')
 
 const rules = {
-  title: { required, minLength: minLength(2), validTitle: (val) => 'test'.test(val) },
+  title: { required, minLength: minLength(10), alpha: (val) => /^[а-яё]*$/i.test(val) },
   text: { required, minLength: minLength(2), validText: (val) => 'test'.test(val) }
 }
 
@@ -30,8 +30,10 @@ const addItems = async () => {
     <div class="modal">
       <button class="btn btn-close" @click="toggleShow">x</button>
       <form class="form" @submit.prevent="addItems">
-        <input class="input-title" type="text" placeholder="Введите заголовок" v-model="title" />
-        <span class="error" v-if="$v.title.$invalid"> Заголовок должен быть обязательным </span>
+        <div class="error" v-if="$v.title.$invalid">
+          <template v-if="!$v.title.alpha"> Имя должно содержать только буквы </template>
+          <template v-else> Имя обязательно для заполнения </template>
+        </div>
         <textarea
           name="note"
           id="note"

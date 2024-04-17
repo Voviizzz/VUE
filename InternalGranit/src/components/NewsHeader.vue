@@ -1,68 +1,31 @@
 <script setup>
-import { defineEmits, defineProps, ref } from 'vue'
-import { useToast } from 'vue-toastification'
+import { defineEmits, defineProps } from 'vue'
 import ModalAddNewItemVue from './ModalAddNewItem.vue'
 
 //Константы, которые показывают состояние
-
-const formActive = ref(false)
-
-const departament = ref('')
-const newsTitle = ref('')
-const newsText = ref('')
 
 //Принимаем переданные значения
 
 const props = defineProps({
   isActive: Boolean,
-  newsList: Array
+  formActive: Boolean
 })
 
 //Отлавливаем события и передаем в родитель
-const emit = defineEmits(['toggleBtn'], ['addNews'])
-function addNews() {
-  emit('addNews', { departament, newsTitle, newsText, formActive })
+const emit = defineEmits(['toggleBtn'], ['addNews'], ['onToggleForm'])
+
+function onToggleForm() {
+  emit('onToggleForm')
 }
 
 function toggleBtn() {
   emit('toggleBtn')
 }
 
-const departaments = [
-  { id: 1, name: 'Производства' },
-  { id: 2, name: 'АСУ' },
-  { id: 3, name: 'Профком' },
-  { id: 4, name: 'Бухгалтерия' },
-  { id: 5, name: 'Столовая' },
-  { id: 6, name: 'Столовая' }
-]
-
-// async function addNews() {
-//   if (newsTitle.value === '' || newsText.value === '' || departament.value === '') {
-//     toast.error('Заполните все поля')
-//   } else {
-//     try {
-//       await axios
-//         .post('https://73df57f40683f5ec.mokky.dev/news', {
-//           title: newsTitle.value,
-//           text: newsText.value,
-//           departament: departament.value,
-//           date: new Date().toLocaleDateString()
-//         })
-//         .then((response) => {
-//           if (response.status === 200 || response.status === 201) {
-//             toast.success('Новость добавлена')
-//             newsTitle.value = ''
-//             newsText.value = ''
-//             departament.value = ''
-//             formActive.value = false
-//           }
-//         })
-//     } catch {
-//       toast.error('Новость не добавлена')
-//     }
-//   }
-// }
+function addNews({ departament, newsTitle, newsText }) {
+  // console.log(formActive.formActive)
+  emit('addNews', { departament, newsTitle, newsText })
+}
 
 // function modalOpen() {
 //   document.querySelector('body').style.overflow = 'hidden'
@@ -73,14 +36,6 @@ const departaments = [
 //   document.querySelector('body').style.overflow = 'auto'
 //   modalActive.value = false
 // }
-
-function setDepartament(dep) {
-  document.querySelector('.select_current').textContent = dep
-  departament.value = dep
-  if (dep) {
-    document.querySelector('.select__icon').classList.add('hidden')
-  }
-}
 
 // console.log(newsText)
 // console.log(newsTitle);
@@ -131,7 +86,7 @@ function setDepartament(dep) {
               </option>
             </select>
             <button
-              @click.prevent="formActive = !formActive"
+              @click.prevent="onToggleForm"
               class="flex create-new-note float-right px-5 py-2 rounded-lg text-white bg-[#5c9ee9] hover:bg-[#4290e9] hover:delay-50 hover:scale-110 hover:transalte-y-1 hover:transition hover:ease-in-out"
             >
               Создать новость
@@ -139,90 +94,9 @@ function setDepartament(dep) {
           </div>
         </form>
       </div>
-      <ModalAddNewItemVue />
+      <ModalAddNewItemVue @addNews="addNews" v-bind:formActive="formActive" />
     </div>
   </div>
 </template>
 
-<style scoped>
-.select {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  max-width: 200px;
-}
-
-/* bg-[#5c9ee9] hover:bg-[#4290e9] */
-
-.select__body {
-  position: absolute;
-  top: 100%;
-  left: 10;
-  width: 100%;
-  max-width: 200px;
-  background-color: #5c9ee9;
-  border-radius: 15px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  z-index: 1;
-  display: none;
-}
-.select:hover .select__body {
-  display: block;
-}
-
-.select__item:hover .second_body {
-  display: block;
-}
-
-.select__header {
-  display: flex;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  cursor: pointer;
-  background-color: #5c9ee9;
-  color: #fff;
-  padding: 10px;
-}
-.select__current {
-  font-size: 18px;
-  line-height: 22px;
-  padding: 8px;
-}
-/* .select__icon {
-
-} */
-.select__item {
-  color: #eeeeee;
-  cursor: pointer;
-  font-size: 18px;
-  padding: 10px;
-  line-height: 22px;
-  border-radius: 1px solid #9d2828;
-}
-.select__item:hover {
-  background-color: #4290e9;
-  border-radius: 25px;
-}
-
-.form-enter-active,
-.form-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.form-enter-from,
-.form-leave-to {
-  opacity: 0;
-}
-
-@keyframes bounce {
-  0% {
-    top: 0;
-  }
-  50% {
-    top: 2.5px;
-  }
-  100% {
-    top: 5px;
-  }
-}
-</style>
+<style scoped></style>

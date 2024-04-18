@@ -131,8 +131,20 @@ header {
 }
 
 .textarea {
-    font-size: 24px;
+    font-size: 18px;
     border-radius: 5px;
     padding: 0.5em;
-    border: 1px solid rgb(176, 176, 176)
+    border: 1px solid rgb(176, 176, 176);
+    height: 100px;
+    width: 100%;
+    margin-bottom: 0.5em;
+    resize: none;
 }
+
+.form__group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2em;
+}
+
+.textarea {}

@@ -1,76 +1,108 @@
 <script setup>
-import { defineEmits, ref } from 'vue'
-import { useVuelidate } from '@vuelidate/core'
-import { required, minLength, helpers } from '@vuelidate/validators'
-// import moment from 'moment'
+import { ref, defineEmits, computed } from 'vue'
+import useVuelidate from '@vuelidate/core'
+import { required, minLength, helpers, } from '@vuelidate/validators'
 
 const title = ref('')
 const text = ref('')
+const submitStatus = ref(null)
 
-const rules = {
-  title: {
-    required: helpers.withMessage('Поле не может быть пустым', required),
-    minLength: helpers.withMessage('Поле должно быть больше 5 символов', minLength(5)) // ,
-  },
-  text: { required, minLength: minLength(10) }
-}
+const emit = defineEmits(['add-items'])
 
-const $v = useVuelidate(rules, { title, text })
+const rules = computed(() => {
+  return {
+    title: {
+      required: helpers.withMessage('Это поле обязательно для заполнения', required),
+      minLength: helpers.withMessage('Минимальная длина 3 символа', minLength(3))
+    },
+    text: {
+      required: helpers.withMessage('Это поле обязательно для заполнения', required),
+      minLength: helpers.withMessage('Минимальная длина 10 символов', minLength(3))
+    }
+  }
+})
+const v$ = useVuelidate(rules, { title, text })
 
-const emit = defineEmits(['addItems', 'toggleShow'])
 
-const toggleShow = () => {
-  emit('toggleShow')
-  title.value = ''
-}
+// const AddNotes = () => {
 
-const addItems = async () => {
-  emit('addItems', { title, text })
-}
+//   if (v$.title.$invalid || v$.text.$invalid) {
+//     submitStatus.value = 'ERROR'
+//   } else {
+//     submitStatus.value = 'PENDING'
+//     setTimeout(() => {
+//       submitStatus.value = 'OK'
+//       emit('add-items', { title: title.value, text: text.value })
+//     }, 300)
+//   }
+// }
+
+console.log(v$)
 </script>
+
 <template>
-  <div class="overlay">
-    <div class="modal">
-      <button class="btn btn-close" @click="toggleShow">x</button>
-      <form class="form" @submit.prevent="addItems">
-        <div class="col-md-6 mb-4">
-          <div class="form__group">
-            <label for="title" class="sr-only">Заголовок новости</label>
-            <input
-              type="text"
-              id="title"
-              class="form-control"
-              placeholder="Ваше имя"
-              v-model.trim="title"
-              @input="$v.title.$touch()"
-            />
-            <span class="msg-error" v-for="error in $v.title.$errors" :key="error.$uid">
-              {{ error.$message }}</span
-            >
+  <div class="modal">
+    <div class="modal__content">
+      <form class="form" @submit.prevent="AddNotes">
+        <div class="btn btn-close" @click="emit('toggleShow')">x</div>
+        <label for="title">Введите заголовок</label>
+        <input type="text" name="title" placeholder="Имя" v-model="v$.title.$model" />
+        <TransitionGroup>
+          <div class="form-group" v-for="error in v$.title.$errors" :key="error.$uid">
+            <div class="form__error-message">
+              {{ error.$message }}
+            </div>
           </div>
-          <div class="form__textarea">
-            <label for="note">Заголовок новости</label>
-            <textarea
-              class="textarea"
-              name="note"
-              id="note"
-              placeholder="Текст заметки"
-              v-model="text"
-            ></textarea>
-            <span class="msg-error" v-if="$v.text.$invalid">
-              Тело новости должно быть обязательным! И больше 10 символов</span
-            >
+        </TransitionGroup>
+        <label for="note__text">Введите текст заметики</label>
+        <TransitionGroup>
+          <div class="form-group" v-for="error in v$.text.$errors" :key="error.$uid">
+            <div class="form__error-message">
+              {{ error.$message }}
+            </div>
           </div>
-          <button type="submit" :disabled="$v.$invalid" class="btn btn-add">Add-note</button>
-        </div>
+        </TransitionGroup>
+        <textarea class="note__text" name="text" id="" v-model="v$.text.$model"></textarea>
+        <button @click="AddNotes" class="btn_add">Добавить заметку</button>
       </form>
     </div>
   </div>
 </template>
 
 <style scoped>
-.msg-error {
-  display: block;
-  color: #dc3545;
+.form__error-message {
+  color: red;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+}
+.modal {
+  position: absolute;
+  top: 25%;
+  left: 35%;
+}
+.modal__content {
+  background-color: rgba(223, 223, 223, 0.421);
+  padding: 2em;
+  border-radius: 15px;
+}
+.btn_add {
+  padding: 1em;
+  margin-top: 1em;
+  border-radius: 15px;
+  border: none;
+  background-color: rgb(230, 160, 69);
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+  cursor: pointer;
+}
+.btn_add:hover {
+  background-color: rgb(230, 130, 0);
+}
+.note__text {
+  resize: none;
+  height: 200px;
 }
 </style>

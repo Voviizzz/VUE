@@ -1,36 +1,33 @@
 <script setup>
-import { defineEmits, reactive, defineProps } from 'vue'
+import { defineEmits, ref, defineProps } from 'vue'
+import { useToast } from 'vue-toastification'
 import { useVuelidate } from '@vuelidate/core'
-import { required, minLength } from '@vuelidate/validators'
+import { required, minLength, helpers } from '@vuelidate/validators'
 
 // const v$ = useVuelidate(rules, departament)
 
 // eslint-disable-next-line vue/no-export-in-script-setup
+const toast = useToast()
+const departament = ref('')
+const newsTitle = ref('')
+const newsText = ref('')
 
-const departament = reactive('')
-const newsTitle = reactive('')
-const newsText = reactive('')
-
+//правиила vuelidate
 const rules = {
   departament: {
-    required
+    required: helpers.withMessage('Отдел обязателен', required)
   },
   newsTitle: {
-    required,
-    minLength: minLength(5)
+    required: helpers.withMessage('Заголовок обязателен', required),
+    minLength: helpers.withMessage('Минимальная длина 5', minLength(5))
   },
   newsText: {
-    required,
-    minLength: minLength(10)
+    required: helpers.withMessage('Текст обязателен', required),
+    minLength: helpers.withMessage('Минимальная длина 15', minLength(15))
   }
 }
 
 const v$ = useVuelidate(rules, { departament, newsTitle, newsText })
-
-// const v = useVuelidate(rules, departament)
-// console.log(v);
-// const v$ = useVuelidate(rules, departament)
-// console.log(v$)
 
 const props = defineProps({
   formActive: Boolean
@@ -41,6 +38,8 @@ console.log(props.formActive)
 function setDepartament(dep) {
   document.querySelector('.select_current').textContent = dep
   departament.value = dep
+  console.log(departament.value)
+
   if (dep) {
     document.querySelector('.select__icon').classList.add('hidden')
   }
@@ -60,6 +59,8 @@ const departaments = [
   { id: 5, name: 'Столовая' },
   { id: 6, name: 'Столовая' }
 ]
+
+// console.log(departament.value);
 </script>
 <template>
   <transition name="form">
@@ -70,9 +71,17 @@ const departaments = [
         class="mt-10 container mx-auto w-full flex flex-col border-2 border-white bg-white p-16 rounded-2xl"
       >
         <label for="" class="select__label text-xl">Выберете отдел</label>
+        <TransitionGroup>
+          <div class="form-group" v-for="error in v$.departament.$errors" :key="error.$uid">
+            <div class="form__error-message text-red-500 text-base">
+              {{ error.$message }}
+            </div>
+          </div>
+        </TransitionGroup>
         <div class="select m-3">
           <div class="select__header">
             <span class="select_current">Отдел</span>
+
             <div class="select__icon px-4 animate-bounce text-center flex items-center mt-1">
               &#8595;
             </div>
@@ -80,7 +89,7 @@ const departaments = [
           <div>
             <div class="select__body">
               <div v-for="departament in departaments" :key="departament">
-                <div @click="setDepartament(departament.name)" class="select__item">
+                <div class="select__item" @click="setDepartament(departament.name)">
                   {{ departament.name }}
                 </div>
               </div>
@@ -88,28 +97,46 @@ const departaments = [
           </div>
         </div>
 
-          <label for="title" class="text-xl"> Введите заголовок новости</label>
-          <input
-            v-model.trim="newsTitle"
-            type="text"
-            placeholder="Заголовок"
-            name="title"
-            class="news__item-title w-100 h-10 rounded-xl bg-[#f3f3f3] px-5 m-3 text-xl outline-none"
-          />
- 
+        <label for="title" class="text-xl"> Введите заголовок новости</label>
+        <TransitionGroup>
+          <div class="form-group" v-for="error in v$.newsTitle.$errors" :key="error.$uid">
+            <div class="form__error-message text-red-500 text-base">
+              {{ error.$message }}
+            </div>
+          </div>
+        </TransitionGroup>
+        <input
+          v-model.trim="v$.newsTitle.$model"
+          type="text"
+          placeholder="Заголовок"
+          name="title"
+          :class="{ error: v$.newsTitle.$error }"
+          class="news__item-title w-100 h-10 rounded-xl bg-[#f3f3f3] px-5 m-3 text-xl outline-none"
+        />
 
         <label for="note" class="text-xl">Введите текст новости</label>
-        <div class="error" v-if="v$.newsText.$error"></div>
+        <TransitionGroup>
+          <div class="form-group" v-for="error in v$.newsText.$errors" :key="error.$uid">
+            <div class="form__error-message text-red-500 text-base">
+              {{ error.$message }}
+            </div>
+          </div>
+        </TransitionGroup>
         <textarea
-          v-model.trim="newsText"
+          v-model.trim="v$.newsText.$model"
           name="note"
           id=""
           cols="20"
           rows="6"
           placeholder="Текст новости"
+          :class="{ error: v$.newsText.$error }"
           class="news__item-text outline-none w-100 rounded-xl bg-[#f0f0f0] px-5 m-3 text-xl resize-none"
         ></textarea>
+
         <button
+          type="prevent.submit"
+          :disabled="v$.$invalid"
+          :class="{ errorBtn: v$.$invalid }"
           @click.prevent="addNews"
           class="btn btn-search flex bg-[#5c9ee9] hover:bg-[#4290e9] hover:delay-50 hover:scale-110 hover:transalte-y-1 hover:transition hover:ease-in-out text-white py-2 rounded-lg text-xl max-w-[250px] w-full justify-center mx-auto m-3"
         >
@@ -190,7 +217,10 @@ const departaments = [
 }
 .error {
   outline: 1px solid red;
-  border-radius: 15px;
+  font-size: 18px;
+}
+.errorBtn {
+  background-color: rgba(162, 196, 236, 0.541);
 }
 
 @keyframes bounce {

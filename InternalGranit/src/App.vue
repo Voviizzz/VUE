@@ -8,7 +8,6 @@ import Spinner from './components/Spinner.vue'
 import NewsHeader from './components/NewsHeader.vue'
 import NewsList from './components/NewsList.vue'
 import SideBar from './components/SideBar.vue'
-import useVuelidate from 'vuelidate'
 // import ModalAddNewItem from './components/ModalAddNewItem.vue'
 
 const isActive = ref(false)
@@ -16,20 +15,6 @@ const toast = useToast()
 const loading = ref(true)
 const newsList = ref([])
 const formActive = ref(false)
-
-const rules = {
-  departament: {
-    required: true
-  },
-  newsTitle: {
-    required: true,
-    minLength: 5
-  },
-  newsText: {
-    required: true,
-    minLength: 10
-  }
-}
 
 //********************Toastification *******************/
 
@@ -59,22 +44,12 @@ function onToggleForm() {
 }
 
 /* Добавление новости */ async function addNews({ departament, newsTitle, newsText }) {
-  // if (departament.value === '') {
-  //   toast.error('Выберете отдел')
-  // } else if (newsTitle.value === '') {
-  //   document.querySelector('.news__item-title').classList.add('error')
-  //   toast.error('Заполните заголовок')
-  // } else if (newsText.value === '') {
-  //   document.querySelector('.news__item-text').classList.add('error')
-  //   toast.error('Заполните текст')
-  // } else {
-  const v$ = useVuelidate(rules, { departament, newsTitle, newsText })
   loading.value = true
   try {
     let res = await axios.post('https://73df57f40683f5ec.mokky.dev/news', {
-      departament: v$.departament.value,
-      newsTitle: v$.newsTitle.value,
-      newsText: v$.newsText.value,
+      departament: departament.value,
+      newsTitle: newsTitle.value,
+      newsText: newsText.value,
       date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
     })
     if (res.status === 201 || res.status === 200) {

@@ -5,7 +5,7 @@ import { required, minLength, helpers, } from '@vuelidate/validators'
 
 const title = ref('')
 const text = ref('')
-const submitStatus = ref(null)
+// const submitStatus = ref(null)
 
 const emit = defineEmits(['add-items'])
 

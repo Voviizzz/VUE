@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <script setup>
 // import { useToast } from 'vue-toastification'
 // import axios from 'axios'
@@ -233,3 +234,8 @@ import SideBar from '../src/components/SideBar.vue'
   transition: all 0.3s ease;
 }
 </style>
+=======
+<template>
+  <router-view />
+</template>
+>>>>>>> c36eb78c4045252e892180f04786a92ca0c57a50

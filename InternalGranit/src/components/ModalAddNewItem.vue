@@ -32,7 +32,6 @@ const v$ = useVuelidate(rules, { departament, newsTitle, newsText })
 const props = defineProps({
   formActive: Boolean
 })
-console.log(props.formActive)
 // console.log({ formActive: props.formActive }, formActive.formActive)
 
 function setDepartament(dep) {
@@ -70,7 +69,10 @@ const departaments = [
         type="submit"
         class="mt-10 container mx-auto w-full flex flex-col border-2 border-white bg-white p-16 rounded-2xl"
       >
-        <label for="" class="select__label text-xl">Выберете отдел</label>
+        <div class="flex justify-between items-center">
+          <label for="" class="select__label text-xl">Выберете отдел</label>
+          <span class=" before:content-[']" ></span>
+        </div>
         <TransitionGroup>
           <div class="form-group" v-for="error in v$.departament.$errors" :key="error.$uid">
             <div class="form__error-message text-red-500 text-base">

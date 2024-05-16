@@ -12,14 +12,13 @@ defineProps({
   addToCart: Function
 })
 // const clickToFav = inject('clickToFav')
-
 </script>
 <template>
   <div
     class="relative border border-slate-200 rounded-3xl p-8 cursor-pointer hover: transform hover:scale-105 transition hover:shadow-xl"
   >
     <img
-    v-if="clickToFav"
+      v-if="clickToFav"
       @click="clickToFav"
       :src="!isFavourite ? '/like-1.svg' : '/like-2.svg'"
       alt="like"

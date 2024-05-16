@@ -107,14 +107,13 @@ const feetchItems = async () => {
   try {
     const params = {
       sortBy: filters.sortBy
-      // searchQuery: filters.searchQuery
     }
 
     if (filters.searchQuery) {
       params.title = `*${filters.searchQuery}*`
     }
 
-    const { data } = await axios.get('https://508e167b46cfab68.mokky.dev/items', {
+    const { data } = await axios.get(`https://508e167b46cfab68.mokky.dev/items`, {
       params
     })
 
@@ -138,6 +137,7 @@ watch(cart, () => {
     isAdded: false
   }))
 })
+watch(filters, feetchItems)
 </script>
 
 <template>

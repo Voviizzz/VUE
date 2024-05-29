@@ -1,13 +1,14 @@
 <script setup>
 import { defineEmits, ref, defineProps } from 'vue'
-import { useToast } from 'vue-toastification'
+// import { useToast } from 'vue-toastification'
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength, helpers } from '@vuelidate/validators'
+import IconClose from '../../public/icons/IconClose.vue'
 
 // const v$ = useVuelidate(rules, departament)
 
 // eslint-disable-next-line vue/no-export-in-script-setup
-const toast = useToast()
+// const toast = useToast()
 const departament = ref('')
 const newsTitle = ref('')
 const newsText = ref('')
@@ -44,8 +45,12 @@ function setDepartament(dep) {
   }
 }
 
-const emit = defineEmits(['addNews'])
+const emit = defineEmits(['addNews'], ['closeForm'])
 
+
+function closeForm() {
+  emit('closeForm')
+}
 function addNews() {
   // console.log({ departament, newsTitle, newsText });
   emit('addNews', { departament, newsTitle, newsText })
@@ -70,8 +75,8 @@ const departaments = [
         class="mt-10 container mx-auto w-full flex flex-col border-2 border-white bg-white p-16 rounded-2xl"
       >
         <div class="flex justify-between items-center">
-          <label for="" class="select__label text-xl">Выберете отдел</label>
-          <span class=" before:content-[']" ></span>
+          <label for="" class="select__label ">Выберете отдел</label>
+          <IconClose class="cursor-pointer hover:delay-50 hover:scale-110 hover:transalte-y-1 hover:transition hover:ease-in-out" @click="closeForm" />
         </div>
         <TransitionGroup>
           <div class="form-group" v-for="error in v$.departament.$errors" :key="error.$uid">

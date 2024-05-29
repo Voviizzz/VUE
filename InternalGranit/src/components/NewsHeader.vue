@@ -1,7 +1,7 @@
 <script setup>
 import { defineEmits, defineProps, ref } from 'vue'
 import ModalAddNewItemVue from './ModalAddNewItem.vue'
-import HeaderItems from './HeaderItems.vue'
+// import HeaderItems from './HeaderItems.vue'
 
 //Константы, которые показывают состояние
 
@@ -23,10 +23,6 @@ const emit = defineEmits(
 
 function onToggleForm() {
   emit('onToggleForm')
-}
-
-function toggleBtn() {
-  emit('toggleBtn')
 }
 
 function onChangeSearch(e) {
@@ -60,7 +56,6 @@ function addNews({ departament, newsTitle, newsText }) {
 <template>
   <div>
     <div>
-      <HeaderItems :props="props" @toggleBtn="toggleBtn" @onToggleForm="onToggleForm" />
       <div
         class="mt-10 flex hover:shadow-lg justify-between hover:transition hover:ease-in-out h-16 rounded-xl bg-[#ffffff] items-center container mx-auto"
       >
@@ -105,7 +100,11 @@ function addNews({ departament, newsTitle, newsText }) {
           </button>
         </div>
       </div>
-      <ModalAddNewItemVue @addNews="addNews" v-bind:formActive="formActive" />
+      <ModalAddNewItemVue
+        @addNews="addNews"
+        @closeForm="onToggleForm"
+        v-bind:formActive="formActive"
+      />
     </div>
   </div>
 </template>

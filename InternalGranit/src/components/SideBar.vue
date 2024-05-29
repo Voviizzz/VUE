@@ -1,147 +1,221 @@
-<script setup></script>
-
 <template>
-  <div
-    class="sidebar max-w-80 w-full bg-sidebar font-ruso text-base items-center justify-between py-6 :active={ isActive }"
-  >
-    <div class="h-screen text-white flex-1">
-      <div class="sidebar__header px-7 flex items-center justify-between pb-4">
-        <img class="" src="../assets/Logo.svg" alt="" />
-        <div class="header__text flex flex-col items-center pl-2">
-          <p class="text-gray-200 text-xl">АО РПТП ГРАНИТ</p>
-          <span class="text-base">Корпоративный портал</span>
+  <aside :class="`${is_expanded && 'is-expanded'}`">
+    <div class="header">
+      <div class="logo">
+        <img src="../assets/Logo.svg" />
+      </div>
+      <transition name="fade">
+        <div v-if="is_expanded" class="logo-text">
+          <div>АО"РПТП"ГРАНИТ"</div>
+          <span class="logo-text-alt">Корпоративный сайт</span>
         </div>
-        <!-- <div
-            class="sidebar__close mr-1 relative h-[50px] w-[27px] inline-block bg-[#D9D9D9] opacity-50 hover:opacity-100 cursor-pointer bg rounded-md shadow-sm transition-all after:content-[''] after:absolute after:right-1 after:top-7 after:opacity-100 after:h-[3px] after:w-[20px] after:rounded after:rotate-90 after:bg-[#ffffff] after:transition-all before:content-[''] before:absolute before:rotate-[-45deg] before:opacity-100 before:right-1 before:top-4 before:h-[3px] before:w-[20px] before:bg-white"
-          ></div> -->
-      </div>
-
-      <div class="sidebar__menu text-2xl">
-        <ul>
-          <RouterLink to="/">
-            <li
-              class="group sidebar__link hover:bg-white hover:cursor-pointer text-center px-7 py-7 text-xl"
-            >
-              <a class="flex items-center" href="#">
-                <svg
-                  width="22"
-                  height="23"
-                  viewBox="0 0 22 23"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    class="group-hover:stroke-sidebar"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M7.98735 21.5V16.0093H14.0531V21.5H21V7.98364L10.8823 1.5L1 7.98364V21.5H7.98735Z"
-                    stroke="white"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <p class="group-hover:text-sidebar pl-5">Главная</p>
-              </a>
-            </li>
-          </RouterLink>
-          <RouterLink to="/ads">
-            <li
-              class="group sidebar__link hover:bg-white hover:cursor-pointer text-center px-7 py-7 text-xl"
-            >
-              <a class="flex items-center" href="#">
-                <svg
-                  width="24"
-                  height="25"
-                  viewBox="0 0 24 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    class="group-hover:stroke-sidebar"
-                    d="M12.2441 17.0347V13.0347"
-                    stroke="#FFFF"
-                    stroke-width="2"
-                    stroke-linecap="square"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    class="group-hover:stroke-sidebar"
-                    d="M12.2401 9.23877H12.2501"
-                    stroke="#FFFF"
-                    stroke-width="2"
-                    stroke-linecap="square"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    class="group-hover:stroke-sidebar"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M21.5 22.2847V3.78467H3V22.2847H21.5Z"
-                    stroke="#FFFF"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <p class="group-hover:text-sidebar pl-5">Объявления</p>
-              </a>
-            </li>
-          </RouterLink>
-          <RouterLink to="/material">
-            <li
-              class="group sidebar__link hover:bg-white hover:cursor-pointer text-center px-7 py-7 text-xl"
-            >
-              <a class="flex items-center" href="#">
-                <svg
-                  width="22"
-                  height="23"
-                  viewBox="0 0 22 23"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    class="group-hover:stroke-sidebar"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M7.98735 21.5V16.0093H14.0531V21.5H21V7.98364L10.8823 1.5L1 7.98364V21.5H7.98735Z"
-                    stroke="white"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
-                </svg>
-
-                <p class="group-hover:text-sidebar pl-5">Материалы</p>
-              </a>
-            </li>
-          </RouterLink>
-          <RouterLink to="/works">
-            <li
-              class="group sidebar__link hover:bg-white hover:cursor-pointer text-center px-7 py-7"
-            >
-              <a class="flex items-center" href="#">
-                <svg
-                  width="22"
-                  height="23"
-                  viewBox="0 0 22 23"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    class="group-hover:stroke-sidebar"
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M7.98735 21.5V16.0093H14.0531V21.5H21V7.98364L10.8823 1.5L1 7.98364V21.5H7.98735Z"
-                    stroke="white"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
-                </svg>
-
-                <p class="group-hover:text-sidebar pl-5">Рабочие сайты</p>
-              </a>
-            </li>
-          </RouterLink>
-        </ul>
-      </div>
+      </transition>
     </div>
-  </div>
+    <div class="menu-toggle-wrap">
+      <button class="menu-toggle" @click="toggleMenu">
+        <span class="material-symbols-outlined"> keyboard_double_arrow_right </span>
+      </button>
+    </div>
+    <h3>Menu</h3>
+    <div class="menu">
+      <router-link class="button" to="/">
+        <span class="material-symbols-outlined"> home </span>
+        <span class="text">Главная</span>
+      </router-link>
+      <router-link class="button" to="/ads">
+        <span class="material-symbols-outlined"> breaking_news </span>
+        <span class="text">Объявления</span>
+      </router-link>
+      <router-link class="button" to="/contact">
+        <span class="material-symbols-outlined"> group </span>
+        <span class="text">Контакты</span>
+      </router-link>
+
+      <router-link class="button" to="/setting">
+        <span class="material-symbols-outlined"> settings </span>
+        <span class="text">Настройки</span>
+      </router-link>
+    </div>
+    <div class="flex"></div>
+    <div class="menu"></div>
+  </aside>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const is_expanded = ref(localStorage.getItem('is_expanded') === 'true')
+const toggleMenu = () => {
+  is_expanded.value = !is_expanded.value
+  localStorage.setItem('is_expanded', is_expanded.value)
+}
+</script>
+
+<style lang="scss" scoped>
+aside {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--dark);
+  color: var(--light);
+  width: calc(2rem + 32px);
+  overflow: hidden;
+  min-height: 100vh;
+  padding: 1rem;
+  font-size: large;
+  transition: 0.2s ease-in-out;
+
+  .flex {
+    flex: 1 1 0;
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 1s;
+  }
+
+  .fade-enter,
+  .fade-leave-active {
+    opacity: 0;
+  }
+
+  .header {
+    display: flex;
+  }
+  .logo-text {
+    top: 5px;
+    transition: 0.2s ease-out;
+    transition: 0.2s ease-out;
+    left: 60px;
+    position: absolute;
+    color: var(--light);
+    font-size: 1rem;
+    padding-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .logo-text-alt {
+    color: var(--light);
+    font-size: 0.875rem;
+    font-weight: 300;
+    font-style: italic;
+    text-align: center;
+    display: block;
+    padding-left: 0.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    border-top: 1px solid var(--light);
+    border-bottom: 1px solid var(--light);
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    transition: 0.2s ease-out;
+
+    &:hover {
+      color: var(--primary);
+      transition: 0.2s ease-out;
+      transform: translateX(0.5rem);
+      transition: 0.2s ease-out;
+    }
+  }
+
+  .logo {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      height: 100%;
+      width: auto;
+      overflow: clip;
+    }
+  }
+  .menu-toggle-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+
+    position: relative;
+    top: 0;
+    transition: 0.2s ease-out;
+    .menu-toggle {
+      transition: 0.2s ease-out;
+      .material-symbols-outlined {
+        font-size: 2rem;
+        color: var(--light);
+        transition: 0.2s ease-out;
+      }
+      &:hover {
+        .material-symbols-outlined {
+          color: var(--primary);
+          transform: translateX(0.5rem);
+          transition: 0.2s ease-out;
+        }
+      }
+    }
+  }
+  h3,
+  .button .text {
+    opacity: 0;
+  }
+  h3 {
+    color: var(--grey);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  .menu {
+    margin: 0 -1rem;
+    .button {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      transition: 0.2s ease-out;
+      .material-symbols-outlined {
+        font-size: 2rem;
+        color: var(--light);
+        transition: 0.2s ease-out;
+        margin-right: 1rem;
+      }
+      .text {
+        color: var(--light);
+        transition: 0.2s ease-out;
+      }
+
+      &:hover,
+      &.router-link-exact-active {
+        background-color: var(--dark-alt);
+
+        .material-symbols-outlined,
+        .text {
+          color: var(--primary);
+        }
+      }
+      &.router-link-exact-active {
+        border-right: 5px solid var(--primary);
+      }
+    }
+  }
+  &.is-expanded {
+    width: var(--sidebar-width);
+    .menu-toggle-wrap {
+      top: -3rem;
+      .menu-toggle {
+        transform: rotate(180deg);
+      }
+    }
+    h3,
+    .button .text {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    position: fixed;
+    z-index: 99;
+  }
+}
+</style>

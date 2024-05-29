@@ -12,7 +12,7 @@ import SideBar from '../components/SideBar.vue'
 import ModalAddNewItem from '../components/ModalAddNewItem.vue'
 import { filter } from 'lodash'
 
-const isActive = ref(false)
+// const isActive = ref(true)
 const toast = useToast()
 const loading = ref(true)
 const newsList = ref([])
@@ -44,7 +44,7 @@ const onChangeSelect = (newVal) => {
 
 const onChangeSearch = (newValue) => {
   filters.searchQuery = newValue
-  
+
   console.log(filters.searchQuery)
 }
 //Запрос на сервер
@@ -56,7 +56,7 @@ const getNews = async () => {
 
     console.log(filters.searchQuery)
     if (filters.searchQuery) {
-      filters.sortBy='title'
+      filters.sortBy = 'title'
       params.newsTitle = `*${filters.searchQuery}*`
       console.log(params, filters.searchQuery)
     }
@@ -114,14 +114,14 @@ watch(filters, getNews)
 </script>
 
 <template>
-  <div class="wrapper flex">
-    <ModalAddNewItem />
-    <transition name="menu">
-      <SideBar v-if="isActive" />
-    </transition>
-    <!-- ********************Main Section********************* -->
+  <div class="wrapper flex text-2xl w-screen">
+    <ModalAddNewItem @closeForm="onToggleForm" />
 
-    <div class="right-section px-8 py-6 bg-[#F4F6FA] text-2xl w-screen">
+    <!-- ********************Main Section********************* -->
+    <transition name="menu">
+      <SideBar />
+    </transition>
+    <div class="right-section px-8 py-6 bg-[#F4F6FA] mx-auto">
       <NewsHeader
         @onChangeSearch="onChangeSearch"
         @onChangeSelect="onChangeSelect"

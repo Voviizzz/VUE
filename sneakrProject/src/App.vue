@@ -51,6 +51,8 @@ const removeFromCart = (item) => {
 const cartIsEmpty = computed(() => cart.value.length === 0)
 const cartButtonDisabled = computed(() => isCreatingOrder.value || cartIsEmpty.value)
 
+
+
 const createOrders = async (item) => {
   isCreatingOrder.value = true
   try {

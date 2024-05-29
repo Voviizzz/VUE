@@ -1,7 +1,15 @@
 <template>
   <aside :class="`${is_expanded && 'is-expanded'}`">
-    <div class="logo">
-      <img src="../assets/vue.svg" alt="logo" />
+    <div class="header">
+      <div class="logo">
+        <img src="../assets/vue.svg" alt="logo" />
+      </div>
+      <transition name="fade">
+        <div v-if="is_expanded" class="logo-text">
+          <div>АО"РПТП"ГРАНИТ"</div>
+          <span class="logo-text-alt">Корпоративный сайт</span>
+        </div>
+      </transition>
     </div>
     <div class="menu-toggle-wrap">
       <button class="menu-toggle" @click="toggleMenu">
@@ -65,8 +73,63 @@ aside {
   .flex {
     flex: 1 1 0;
   }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 1s;
+  }
+
+  .fade-enter,
+  .fade-leave-active {
+    opacity: 0;
+  }
+
+  .header {
+    display: flex;
+  }
+  .logo-text {
+    top: 30;
+    transition: 0.2s ease-out;
+    transition: 0.2s ease-out;
+    left: 40px;
+    position: absolute;
+    color: var(--light);
+    font-size: 1rem;
+    padding-left: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .logo-text-alt {
+    color: var(--light);
+    font-size: 0.875rem;
+    font-weight: 300;
+    font-style: italic;
+    text-align: center;
+    display: block;
+    padding-left: 0.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    border-top: 1px solid var(--light);
+    border-bottom: 1px solid var(--light);
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    transition: 0.2s ease-out;
+
+    &:hover {
+      color: var(--primary);
+      transition: 0.2s ease-out;
+      transform: translateX(0.5rem);
+      transition: 0.2s ease-out;
+    }
+  }
+
   .logo {
     margin-bottom: 1rem;
+    display: flex;
     img {
       width: 2rem;
     }
